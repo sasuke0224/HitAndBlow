@@ -8,9 +8,14 @@
   <body>
     <div class="content">
       <div class="game">
+        <div class="statistics">
+          <p>3行</p>
+          <p>クリア回数: <span id="clear-count">0</span></p>
+          <p>平均質問回数: <span id="average-question-count">0</span></p>
+        </div>   
         <div class="table">
           <table>
-            <thead>
+            <thead>           
               <th>0</th>
               <th>Guess</th>
               <th>Hit</th>
@@ -274,6 +279,17 @@
       background-color: #ffffff;
       border-color: #acacac;
     }
+
+    .statistics {
+      text-align: center;
+      margin-bottom: 10px;
+      color: white; /* テキストの色を白に設定 */
+    }
+
+    .statistics p {
+      display: inline-block; /* p要素を横に配置 */
+      margin: 0 10px; /* マージンを設定して要素間の間隔を調整 */
+    }
   </style>
   <script>
     /* 答え*/
@@ -286,6 +302,8 @@
     /* 解答上限*/
     const answerLimit = document.getElementsByClassName("tr").length;
     let removeMode = false;
+    let clearCount = 0;
+    let questionCount = 0;
     window.onload = function() {
       createRandomTarget();
     };
@@ -340,9 +358,17 @@
         inputs.splice(0);
         reload();
         if (clear) {
+          if (clear) {
+          clearCount += 1;
+          document.getElementById("clear-count").innerText = clearCount;
+          const averageQuestionCount = questionCount / clearCount;
+          document.getElementById("average-question-count").innerText = averageQuestionCount.toFixed(2);
+          alert(`CLEAR!!\n正解は${target}`);
+          reset();  
           alert(`CLEAR!!\n正解は${target}`);
           reset();
         }
+      }
         if (answerLimit <= results.length) {
           alert(`失敗...\n正解は${target}`);
           reset();
@@ -442,6 +468,7 @@
       createRandomTarget();
       inputs.splice(0);
       results.splice(0);
+      questionCount = 0;
       Array.from(document.getElementsByClassName("removed")).forEach((btn) => {
         btn.classList.remove("removed");
       });

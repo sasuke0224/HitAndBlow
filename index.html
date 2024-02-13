@@ -286,7 +286,9 @@
     /* 解答上限*/
     const answerLimit = document.getElementsByClassName("tr").length;
     let removeMode = false;
-    createRandomTarget();
+    window.onload = function() {
+      createRandomTarget();
+    };
 
     function createRandomTarget() {
       target.splice(0);
@@ -362,6 +364,9 @@
       };
 
       results.push(result);
+      console.log("Comparison result:", comparisonResult);
+
+      reload();
 
       return result.hit == 3;
     }
@@ -375,20 +380,20 @@
         const targetNumber = target[i];
         const inputNumber = inputs[i];
 
-        if (targetNumber === inputNumber) {
-            hit++;
+        if (targetNumber == inputNumber) {
+          hit++;
         } else if (target.includes(inputNumber)) {
           blow++;
         }
       }
-
-    return { hit, blow };
-  }
+      return { hit, blow };
+    }
 
     function reload() {
       const left = document.getElementById("input-left");
       const center = document.getElementById("input-center");
       const right = document.getElementById("input-right");
+
       if (inputs[0]) {
         left.innerText = inputs[0];
       } else {
@@ -406,7 +411,7 @@
       } else {
         right.innerText = "";
       }
-
+      
       const numberButtons = document.getElementsByClassName("number-btn");
 
       for (const btn of numberButtons) {
@@ -418,7 +423,6 @@
       }
 
       const trElements = document.getElementsByClassName("tr");
-
       for (let i = 0; i < answerLimit; i++) {
         if (results[i]) {
           trElements[i].children[0].innerText = i + 1;
